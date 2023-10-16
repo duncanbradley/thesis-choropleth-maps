@@ -1,6 +1,6 @@
 # Chapter 5: Choropleth Maps Can Convey Absolute Magnitude Through the Range of the Accompanying Color Legend
 
-* Data is in the `data` folder (this also contains the script for anonymising original data files)
+* Data are in the `data` folder (this also contains the script for anonymising original data files)
 * Analysis code is in the `ChoroplethMagnitude.qmd` (quarto) file
 
 ## Instructions for Using Docker To Generate the Manuscript Within a Fully-Reproducible Environment
