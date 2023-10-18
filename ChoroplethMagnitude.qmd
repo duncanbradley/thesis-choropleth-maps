@@ -8,9 +8,7 @@ knitr:
 params: 
   eval_models: false
   
-format:
-  docx:
-    keep-tex: true  
+format: pdf
     
 prefer-html: true
     
@@ -395,7 +393,7 @@ This paper explores cognitive processing of overall magnitude in choropleth maps
 
 Choropleth maps are thematic maps which employ colour to symbolise numerical values, conveying quantitative data in a spatial manner. Choropleth mapping uses datasets where each data point corresponds to a discrete area, typically defined by administrative boundaries (e.g., national or local government regions). Ratios, proportions and averages are plotted to enable appropriate comparisons between regions [@dent_cartography_2009].
 
-@dent_cartography_2009 discuss several considerations for choropleth map design, including data pre-processing, spatial resolution, and appropriate accompanying text. However, data classification is a particularly prominent theme in guidance on choropleth mapping. To better convey patterns in the spatial distribution of data, values can be classified into discrete classes [@kraak_cartography_2013]. Decisions around classification involve trade-offs between clarity of patterns in the map and clarity of the legend. Natural Breaks methods \[e.g. Jenks optimisation; @jenks_error_1971\] identify class boundaries according to the distribution of data, ensuring clusters of similar values appear homogeneous. The Equal Frequency method ensures uniform prevalence of each class within the map, whereas the Equal Interval method simply employs the same numerical range for each class [@dent_cartography_2009]. Unclassed choropleth maps [@tobler_choropleth_2010], which do not employ discrete groups at all, are an alternative option. Legends are not divided into classes, meaning each unique value is represented distinctly. This may increase estimation error, yet avoids the impression that similar values either side of a class boundary are substantially different [@kraak_cartography_2013].
+@dent_cartography_2009 discuss several considerations for choropleth map design, including data pre-processing, spatial resolution, and appropriate accompanying text. However, data classification is a particularly prominent theme in guidance on choropleth mapping. To better convey patterns in the spatial distribution of data, values can be classified into discrete classes [@kraak_cartography_2013]. Decisions around classification involve trade-offs between clarity of patterns in the map and clarity of the legend. Natural Breaks methods [e.g., Jenks optimisation, @jenks_error_1971] identify class boundaries according to the distribution of data, ensuring clusters of similar values appear homogeneous. The Equal Frequency method ensures uniform prevalence of each class within the map, whereas the Equal Interval method simply employs the same numerical range for each class [@dent_cartography_2009]. Unclassed choropleth maps [@tobler_choropleth_2010], which do not employ discrete groups at all, are an alternative option. Legends are not divided into classes, meaning each unique value is represented distinctly. This may increase estimation error, yet avoids the impression that similar values either side of a class boundary are substantially different [@kraak_cartography_2013].
 
 Regarding the minimum and maximum values used in the labels for each class, two options are available. Continuous class ranges include non-observed values to create a continuous sequence of numbers. This provides consistency when re-using a legend for multiple maps. However, this may increase the chance that viewers make imprecise estimations of specific values, compared to non-continuous class ranges which include only observed values [@dent_cartography_2009]. The use of open-ended categories at a legend's extremes [@paul_choropleth_1993] is an additional consideration, generating a similar generalisability-precision trade-off.
 
@@ -443,7 +441,7 @@ To control for the possibility that participants used the colour legend's numeri
 
 ### Pre-Registration
 
-We predicted that urgency ratings would be higher for truncated legends, compared to extended legends. In addition, we planned to compare whether any difference between these two conditions was moderated by the presence or absence of numerical labels, but made no predictions about existence or direction of any main effect or interaction. Participants completed Garcia-Retamero et al.'s [@garciare-retamero_measuring_2016] Subjective Graph Literacy scale, therefore we also planned to test whether any observed effects (or lack of) could be explained by differences in data visualisation literacy. This five-item scale is a quick, reliable measure that is correlated with scores on Galesic and Garcia-Retamero's [@galesic_graph_2011] test-based measure of data visualisation literacy. The pre-registration, plus materials, experiment script, data, analysis code, and Dockerfile are available at <https://osf.io/qe9hf/?view_only=32c420d6ef6c45b1ae2d3dc42dc6fe69>. This repository contains the requisite resources to generate a fully-reproducible version of this paper.
+We predicted that urgency ratings would be higher for truncated legends, compared to extended legends. In addition, we planned to compare whether any difference between these two conditions was moderated by the presence or absence of numerical labels, but made no predictions about existence or direction of any main effect or interaction. Participants completed Garcia-Retamero et al.'s [-@garcia-retamero_measuring_2016] Subjective Graph Literacy scale, therefore we also planned to test whether any observed effects (or lack of) could be explained by differences in data visualisation literacy. This five-item scale is a quick, reliable measure that is correlated with scores on Galesic and Garcia-Retamero's [-@galesic_graph_2011] test-based measure of data visualisation literacy. The pre-registration, plus materials, experiment script, data, analysis code, and Dockerfile are available at <https://osf.io/qe9hf/?view_only=32c420d6ef6c45b1ae2d3dc42dc6fe69>. This repository contains the requisite resources to generate a fully-reproducible version of this paper.
 
 ### Design
 
@@ -611,28 +609,36 @@ Linear mixed-effects models were constructed using lme4 [@bates_fitting_2015, ve
 
 passed %>%
 ggplot(aes(x = slider.response, y = range)) +
-  geom_density_ridges(scale = 0.5, colour = "white", alpha = 0,
+    theme_minimal(base_size = 10) +
+  theme(panel.grid.major.y = element_line(colour="white")) +
+  geom_density_ridges(scale = 0,
+                      colour = "lightgrey",
+                      alpha = 0,
                       jittered_points = T,
-                      position = position_raincloud(height = 0.2),
-                      point_alpha =0.2,
-                      point_colour = "grey") +
-    stat_binline(binwidth=0.01, scale = 0.7, alpha = 1, 
-                 fill = "grey",
-                 lwd=1)  +
+                      position = position_raincloud(height = 0.3),
+                      point_alpha = 0.05,
+                      point_colour = "black",
+                      point_size = 0.75) +
+  geom_density_ridges(aes(height = after_stat(density)),
+                      stat = "density",
+                      scale = 0.5,
+                      colour = "black",
+                      fill = "darkgrey",
+                      panel_scaling = FALSE) +
   geom_boxplot(outlier.shape=NA,
                  width = 0.08,
                  colour = "white",
                  fill = "white",
                  alpha = 0,
                  lwd = 1,
-                 position = position_nudge(y=-.15)) +
+                 position = position_nudge(y=-.2)) +
       geom_boxplot(outlier.shape=NA,
                  width = 0.08,
                  colour = "black",
                  fill = "white",
                  alpha = 0.7,
                  lwd = 0.5,
-                 position = position_nudge(y=-.15)) +
+                 position = position_nudge(y=-.2)) +
   scale_x_continuous(labels = c(
     expression(paste(italic("\"Not very urgently\""))),
     expression(paste(italic("\"Very urgently\"")))),
@@ -644,9 +650,7 @@ ggplot(aes(x = slider.response, y = range)) +
        x = NULL,
        y = NULL) +
   scale_y_discrete(labels = c("Truncated Range", "Extended Range"),
-                   limits = c("trunc", "extend")) +
-  theme_minimal(base_size = 10) +
-  theme(panel.grid.major.y = element_line(colour="white"))
+                   limits = c("trunc", "extend"))
 
 ```
 
