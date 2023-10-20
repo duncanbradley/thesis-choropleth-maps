@@ -18,3 +18,8 @@ This repository provides resources for re-creating the computational environment
 
 Note: Computationally intensive statistical models have been saved in `ChoroplethMagnitude_cache`. To speed-up rendering, these cached models are loaded instead of executing the code that generated them. To generate models from scratch, change the `eval_models` parameter in line 9 to `true`.
 
+In case of a Sementation Fault error, add the following code to the script and run rmarkdown::render("ChoroplethMagnitude.qmd", output_file = "ChoroplethMagnitude.pdf")
+
+knitr::opts_chunk$set(
+  echo = FALSE, include = FALSE, warning = FALSE, message = FALSE
+)
