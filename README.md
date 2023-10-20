@@ -20,6 +20,7 @@ Note: Computationally intensive statistical models have been saved in `Choroplet
 
 In case of a Sementation Fault error, add the following code to the script and run rmarkdown::render("ChoroplethMagnitude.qmd", output_file = "ChoroplethMagnitude.pdf")
 
-knitr::opts_chunk$set(
+```knitr::opts_chunk$set(
   echo = FALSE, include = FALSE, warning = FALSE, message = FALSE
 )
+```
